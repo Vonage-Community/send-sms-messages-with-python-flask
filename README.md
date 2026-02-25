@@ -16,7 +16,7 @@ Learn more about the Messages API with this tutorial. The tutorial goes into mor
 ## Setup
 ### Create an account with ngrok, install it, and spin up a tunnel
 
-The Voice API must be able to access your webhook so that it can make requests to it, therefore, the endpoint URL must be accessible over the public internet.
+The Messages API must be able to access your webhook so that it can make requests to it, therefore, the endpoint URL must be accessible over the public internet.
 
 In order to do that for this tutorial, [we will use ngrok](https://developer.vonage.com/en/blog/local-development-nexmo-ngrok-tunnel-dr/).
 
@@ -38,27 +38,27 @@ Forwarding                	https://4647-135-180-11-118.ngrok-free.app -> http://
 
 You will need a [Vonage API account](https://ui.idp.vonage.com/ui/auth/registration) and a virtual phone number. You can purchase a number from the [developer dashboard](https://dashboard.vonage.com/numbers/buy-numbers). Make sure to buy a number in your country code and with SMS and MMS features.
 
-Since we will be using the Messages API, you will also need to configure your account settings accordingly. From the left hand navigation in the developer dashboard, select API Settings. In the SMS settings section, select Messages API and complete the accompanying prompts to save your changes.
+Since we will be using the Messages API, you will also need to configure your account settings accordingly. From the left hand navigation in the developer dashboard, select **API Settings**. In the SMS settings section, select **Messages API** and complete the accompanying prompts to save your changes.
 
 ![A screenshot of the API Settings menu in the Vonage developer dashboard indicating where to configure the SMS settings to use the Messages API.](images/2026-02_send-sms-python-flask_screenshot_account-settings.png)
 
 ### Create a Messages API application and link your number to it
 
-Create your Messages API application in the developer dashboard by navigating to the Applications window from the left hand menu and clicking the Create new application button. This will open the application creation menu. Give your application the name `send-sms`.
+Create your Messages API application in the developer dashboard by navigating to the **Applications** window from the left hand menu and clicking the "Create new application" button. This will open the application creation menu. Give your application the name `send-sms`.
 
-Under the Capabilities section, toggle the option for Messages, which will reveal a list of text fields. In the text field labeled Status URL, provide the ngrok public URL amended with the webhook we will define in the Flask app. It will look something like this:
+Under the **Capabilities** section, toggle the option for **Messages**, which will reveal a list of text fields. In the text field labeled **Status URL**, provide the ngrok public URL amended with the webhook we will define in the Flask app. It will look something like this:
 
 ```
 https://0a6ec0a950eb.ngrok-free.app/webhooks/message-status
 ```
 
-For the Inbound URL, you can just use `http://example.com/inbound` since we won’t be using this webhook for this particular demo.
+Since we are not handling inbound messages in this tutorial, the **Inbound URL** will not be used. However, creating an application requires one, so you can provide `http://example.com/inbound` to satisfy this requirement. 
 
-Click the Generate new application button.
+Click the "Generate new application" button.
 
 ![A screenshot of the Create an application menu in the Vonage developer dashboard indicating which options need to be configured in order to create a Messages application.](images/2026-02_send-sms-python-flask_screenshot_create-application.png)
 
-Now that your application has been created, you can link your number to it by clicking on the Link button in the table of available numbers. Make sure to select a number with SMS and MMS features. Your application is now ready to answer inbound calls.
+Now that your application has been created, you can link your number to it by clicking on the **Link** button in the table of available numbers. Make sure to select a number with SMS and MMS features.
 
 ## Run the code
 
@@ -73,9 +73,9 @@ pip install -r requirements.txt
 ```
 ### 3. Generate and add your application ID and private key to your environment variables
 
-In the developer dashboard [Applications menu](https://dashboard.vonage.com/applications), click on the `send-sms` application and then click Edit. Once the edit window opens, click on the button that says, “Generate public and private key.” This will trigger a download of your private key as a file with the extension `.key`. Keep this file private and do not share it anywhere it could be compromised.
+In the developer dashboard [Applications menu](https://dashboard.vonage.com/applications), click on the `send-sms` application and then click **Edit**. Once the edit window opens, click on the button that says, “Generate public and private key”. This will trigger a download of your private key as a file with the extension `.key`. **Keep this file private and do not share it anywhere it could be compromised.**
 
-Click on the Save changes button and also note your Application ID.
+Click on the "Save changes button" and also note your Application ID.
 
 ![A screenshot of the application Edit menu in the Vonage developer dashboard showing where to generate a public and private key.](images/2026-02_send-sms-python-flask_screenshot_edit-application-keys.png)
 
