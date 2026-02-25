@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+    <title>Delivery Receipt</title>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js"></script>
+    <script>
+        const socket = io.connect();
+
+        socket.on('status_update', function (data) {
+            // Update the status on the page
+            if (data.message_uuid === "{{ message_uuid }}") {
+                document.getElementById('status').innerText = data.status;
+            }
+            if (data.hasOwnProperty('info')) {
+            document.getElementById('info').innerText = data.info;
+            }
+        });
+    </script>
+</head>
+
+<body>
+
+    <div class="container">
+
+        <h1>Delivery Receipt</h1>
+
+        <div class="container">
+            <div class="row">
+                <div class="col-sm">Message UUID</div>
+
+                <div class="col-sm">
+                    <p>{{ message_uuid }}</p>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-sm">Status</div>
+
+                <div class="col-sm">
+                    <p id="status">pending . . .</p>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-sm">Info</div>
+
+                <div class="col-sm">
+                    <p id="info">. . .</p>
+                </div>
+            </div>
+
+        </div>
+
+        <div><button type="button" onClick="window.location.href='/'" class="btn btn-primary">Send another SMS</button>
+        </div>
+    </div>
+
+</body>
+
+</html>
