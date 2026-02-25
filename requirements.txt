@@ -1,0 +1,5 @@
+vonage
+flask
+python-dotenv
+Jinja2
+flask-socketio
