@@ -1,12 +1,12 @@
 # Send SMS Messages With Python, Flask and Vonage
 
-This repo uses the Vonage Messages API to send an SMS with a Python Flask app.
+This repo uses the [Vonage Messages API](https://developer.vonage.com/en/messages/overview) to send an SMS with a Python Flask app.
 
 Learn more about the Messages API with this tutorial. The tutorial goes into more detail about the example code in this repo and provides supplemental information to help you out. TODO: Add link once published
 
 **Please note:** Because of different SMS regulations around the world, you may receive an error code from Vonage when attempting to send an SMS from a Vonage virtual number. You can [view logs in the developer dashboard](https://dashboard.vonage.com/messages/logs) by selecting “Logs” from the navigation on the left. To learn more about SMS regulations – especially if you’re using a 10 digit US number – refer to this blog post about [what you need to know about 10DLC](https://developer.vonage.com/en/blog/what-you-need-to-know-about-10dlc).
 
-# How to get this code running
+# How To Get This Code Running
 
 ## Prerequsites
 - Python 3.8+
@@ -32,11 +32,11 @@ This command will generate the public URLs your local server will tunnel to on p
 Forwarding                	https://4647-135-180-11-118.ngrok-free.app -> http://localhost:5000
 ```
 
-Please note: Unless you are using one of ngrok’s paid plans, the generated public URLs are not persistent. In other words, every time you run the `ngrok` command, the resulting URLs will change and you will have to update your Vonage application configuration. To prevent this, leave ngrok running in the background.
+**Please note:** Unless you are using one of ngrok’s paid plans, the generated public URLs are not persistent. In other words, every time you run the `ngrok` command, the resulting URLs will change and you will have to update your Vonage application configuration. To prevent this, leave ngrok running in the background.
 
 ### Create a Vonage account, purchase a number, and make sure you’re using the right API
 
-You will need a Vonage API account and a virtual phone number. You can purchase a number from the [developer dashboard](https://dashboard.vonage.com/numbers/buy-numbers). Make sure to buy a number in your country code and with SMS and MMS features.
+You will need a [Vonage API account](https://ui.idp.vonage.com/ui/auth/registration) and a virtual phone number. You can purchase a number from the [developer dashboard](https://dashboard.vonage.com/numbers/buy-numbers). Make sure to buy a number in your country code and with SMS and MMS features.
 
 Since we will be using the Messages API, you will also need to configure your account settings accordingly. From the left hand navigation in the developer dashboard, select API Settings. In the SMS settings section, select Messages API and complete the accompanying prompts to save your changes.
 
