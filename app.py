@@ -1,21 +1,21 @@
 import os
 
 from dotenv import load_dotenv
-
 from flask import Flask, redirect, render_template, request, url_for
-from flask_socketio import SocketIO, emit
+from flask_socketio import SocketIO
 from vonage import Auth, Vonage
 from vonage_messages import Sms
 
-VONAGE_VIRTUAL_NUMBER = 'your-vonage-number-goes-here'
-
 load_dotenv()
 
-APPLICATION_ID = os.getenv('APPLICATION_ID')
-PRIVATE_KEY = os.getenv('PRIVATE_KEY')
+APPLICATION_ID = os.getenv("APPLICATION_ID")
+PRIVATE_KEY = os.getenv("PRIVATE_KEY")
+VONAGE_VIRTUAL_NUMBER = os.getenv("VONAGE_VIRTUAL_NUMBER")
+
+if not APPLICATION_ID or not PRIVATE_KEY or not VONAGE_VIRTUAL_NUMBER:
+    raise RuntimeError("Missing APPLICATION_ID, PRIVATE_KEY, or VONAGE_VIRTUAL_NUMBER env vars")
 
 client = Vonage(Auth(application_id=APPLICATION_ID, private_key=PRIVATE_KEY))
-
 
 app = Flask(__name__)
 socketio = SocketIO(app)
@@ -26,44 +26,41 @@ def index():
     return render_template('index.html')
 
 
-@app.route('/delivery_receipt/<message_uuid>')
+@app.route("/delivery_receipt/<message_uuid>")
 def delivery_receipt(message_uuid):
-    return render_template('delivery_receipt.html', message_uuid=message_uuid)
+    return render_template("delivery_receipt.html", message_uuid=message_uuid)
 
 
-@app.route('/webhooks/message-status', methods=['POST'])
+@app.route("/webhooks/message-status", methods=["POST"])
 def message_status():
-    request_object = request.get_json()
-    message_uuid = request_object['message_uuid']
-    status = request_object['status']
+    data = request.get_json(silent=True) or {}
+    message_uuid = data.get("message_uuid")
+    status = data.get("status")
 
-    print(
-        f"Message status for message UUID: {request_object['message_uuid']} ===> {request_object['status']}"
-    )
+    if not message_uuid or not status:
+        return {"error": "missing message_uuid/status"}, 400
 
-    if 'error' in request_object:
-        print(
-            f"Error encountered ===> {request_object['error']['title']} : {request_object['error']['detail']}"
-        )
-        info = (
-            f"{request_object['error']['title']} : {request_object['error']['detail']}"
-        )
-        socketio.emit(
-            'status_update',
-            {'message_uuid': message_uuid, 'status': status, 'info': info},
-        )
+    payload = {"message_uuid": message_uuid, "status": status}
 
-    else:
-        socketio.emit('status_update', {'message_uuid': message_uuid, 'status': status})
+    err = data.get("error")
+    if isinstance(err, dict):
+        payload["info"] = f"{err.get('title', 'Error')} : {err.get('detail', '')}"
 
-    return '200', 200
+    print("Status update uuid=%s status=%s", message_uuid, status)
 
+    socketio.emit("status_update", payload)
 
-@app.route('/send_sms', methods=['POST'])
+    return "200", 200
+
+@app.route("/send_sms", methods=["POST"])
 def send_sms():
-    to_number = request.form['to_number']
+    to_number = (request.form.get("to_number") or "").strip()
+    message = (request.form.get("message") or "").strip()
+
     print(f"To number is ===> {to_number}")
-    message = request.form['message']
+
+    if not to_number or not message:
+        return {"error": "to_number and message are required"}, 400
 
     response = client.messages.send(
         Sms(
