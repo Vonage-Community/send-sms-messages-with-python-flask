@@ -46,7 +46,7 @@ def message_status():
     if isinstance(err, dict):
         payload["info"] = f"{err.get('title', 'Error')} : {err.get('detail', '')}"
 
-    print("Status update uuid=%s status=%s", message_uuid, status)
+    print(f"Status update uuid={message_uuid}, status={status}")
 
     socketio.emit("status_update", payload)
 
