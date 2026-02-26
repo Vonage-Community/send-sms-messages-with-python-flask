@@ -2,8 +2,6 @@
 
 This repo uses the [Vonage Messages API](https://developer.vonage.com/en/messages/overview) to send an SMS with a Python Flask app.
 
-Learn more about the Messages API with this tutorial. The tutorial goes into more detail about the example code in this repo and provides supplemental information to help you out. TODO: Add link once published
-
 **Please note:** Because of different SMS regulations around the world, you may receive an error code from Vonage when attempting to send an SMS from a Vonage virtual number. You can [view logs in the developer dashboard](https://dashboard.vonage.com/messages/logs) by selecting “Logs” from the navigation on the left. To learn more about SMS regulations – especially if you’re using a 10 digit US number – refer to this blog post about [what you need to know about 10DLC](https://developer.vonage.com/en/blog/what-you-need-to-know-about-10dlc).
 
 # How To Get This Code Running
